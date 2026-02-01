@@ -43,7 +43,7 @@ export class CreateTransactionUseCase {
 
       const transactionProduct = TransactionProduct.create({
         productId: productInput.productId,
-        transactionId: '',
+        transactionId: 'PENDING',
         quantity: productInput.quantity,
         unitPrice: unitPrice,
         totalAmount: totalAmount,
@@ -58,7 +58,7 @@ export class CreateTransactionUseCase {
     const transaction = Transaction.create({
       customerId: input.customerId,
       deliveryId: input.deliveryId ?? null,
-      externalTransactionId: '',
+      externalTransactionId: 'PENDING',
       products: transactionProducts,
       baseFee: baseFee,
       deliveryFee: deliveryFee,
