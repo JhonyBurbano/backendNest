@@ -1,0 +1,231 @@
+{
+  "info": {
+    "name": "E-Commerce Payment API",
+    "_postman_id": "e-commerce-payment-api",
+    "description": "API for e-commerce payment system with NestJS",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Get All Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["products"]
+            }
+          }
+        },
+        {
+          "name": "Get Product By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "5456c13d-93ab-4947-a0a0-cecc3c42bfad"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Product Stock",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"stock\": 95\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/products/:id/update-stock",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", ":id", "update-stock"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "5456c13d-93ab-4947-a0a0-cecc3c42bfad"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Customers",
+      "item": [
+        {
+          "name": "Create Customer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"customer@example.com\",\n  \"full_name\": \"John Doe\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/customers",
+              "host": ["{{baseUrl}}"],
+              "path": ["customers"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Deliveries",
+      "item": [
+        {
+          "name": "Create Delivery",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"b0235bcf-7b93-4606-9aba-42be5194d05d\",\n  \"address\": \"123 Main Street\",\n  \"city\": \"Bogotá\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/deliveries",
+              "host": ["{{baseUrl}}"],
+              "path": ["deliveries"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Transactions",
+      "item": [
+        {
+          "name": "Create Transaction",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"b0235bcf-7b93-4606-9aba-42be5194d05d\",\n  \"deliveryId\": \"delivery-uuid\",\n  \"products\": [\n    {\n      \"productId\": \"5456c13d-93ab-4947-a0a0-cecc3c42bfad\",\n      \"quantity\": 2\n    }\n  ],\n  \"baseFee\": 5000,\n  \"deliveryFee\": 10000,\n  \"currency\": \"COP\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/transactions",
+              "host": ["{{baseUrl}}"],
+              "path": ["transactions"]
+            }
+          }
+        },
+        {
+          "name": "Update Transaction Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"APPROVED\",\n  \"externalTransactionId\": \"ext-trans-123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/transactions/:id/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["transactions", ":id", "status"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "transaction-uuid"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payment Provider",
+      "item": [
+        {
+          "name": "Create Card Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"number\": \"4242424242424242\",\n  \"exp_month\": \"12\",\n  \"exp_year\": \"2025\",\n  \"cvc\": \"123\",\n  \"card_holder\": \"John Doe\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payment-provider/tokens/cards",
+              "host": ["{{baseUrl}}"],
+              "path": ["payment-provider", "tokens", "cards"]
+            }
+          }
+        },
+        {
+          "name": "Create Payment Transaction",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"acceptance_token\": \"acceptance-token\",\n  \"accept_personal_auth\": \"true\",\n  \"amount_in_cents\": 3269900,\n  \"currency\": \"COP\",\n  \"customer_email\": \"customer@example.com\",\n  \"reference\": \"transaction-ref-123\",\n  \"signature\": \"signature-hash\",\n  \"payment_method\": {\n    \"type\": \"CARD\",\n    \"token\": \"card-token\",\n    \"installments\": 1\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payment-provider/transactions",
+              "host": ["{{baseUrl}}"],
+              "path": ["payment-provider", "transactions"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ]
+}

@@ -1,73 +1,313 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# E-Commerce Payment System Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Backend API developed with NestJS for an e-commerce payment system. Implements hexagonal architecture (ports and adapters pattern) with clean separation of concerns.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🏗️ Architecture
 
-## Description
+- **Framework**: NestJS (TypeScript)
+- **Database**: PostgreSQL
+- **ORM**: Prisma
+- **Architecture Pattern**: Hexagonal Architecture / Ports & Adapters
+- **Design Pattern**: Railway Oriented Programming (ROP)
+- **External API Integration**: Payment Provider Sandbox
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 📊 Data Model
 
-## Installation
+### Database Schema
+
+**Product**
+- id (UUID, PK)
+- name (String)
+- description (String)
+- amount (Integer - amount in cents)
+- currency (Enum: COP, USD)
+- image (String - URL)
+- stock (Integer)
+- createdAt, updatedAt (DateTime)
+
+**Customer**
+- id (UUID, PK)
+- email (String, Unique)
+- full_name (String)
+- createdAt (DateTime)
+
+**Delivery**
+- id (UUID, PK)
+- customerId (UUID, FK → Customer)
+- address (String)
+- city (String)
+- createdAt, updatedAt (DateTime)
+
+**Transaction**
+- id (UUID, PK)
+- status (Enum: PENDING, APPROVED, DECLINED, ERROR)
+- customerId (UUID, FK → Customer)
+- deliveryId (UUID, FK → Delivery, nullable)
+- externalTransactionId (String)
+- subtotal (Integer)
+- baseFee (Integer)
+- deliveryFee (Integer)
+- totalAmount (Integer)
+- currency (Enum: COP, USD)
+- createdAt, updatedAt (DateTime)
+
+**TransactionProduct**
+- id (UUID, PK)
+- transactionId (UUID, FK → Transaction)
+- productId (UUID, FK → Product)
+- quantity (Integer)
+- unitPrice (Integer)
+- totalAmount (Integer)
+- createdAt, updatedAt (DateTime)
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 20+
+- Docker & Docker Compose
+- npm or yarn
+
+### Installation
 
 ```bash
-$ yarn install
+# Install dependencies
+npm install
+
+# Start PostgreSQL with Docker
+docker compose up -d
+
+# Run Prisma migrations
+npx prisma migrate deploy
+
+# Generate Prisma client
+npx prisma generate
+
+# Build the application
+npm run build
 ```
 
-## Running the app
+### Configuration
+
+Create a `.env` file in the root directory:
 
 ```bash
-# development
-$ yarn run start
+# Database
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/postgresprueba"
 
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
+# Payment Provider (Sandbox)
+PAYMENT_PROVIDER_BASE_URL="https://api-sandbox.co.uat.wompi.dev/v1"
+PAYMENT_PROVIDER_PUBLIC_KEY="pub_stagtest_g2u0HQd3ZMh05hsSgTS2lUV8t3s4mOt7"
+PAYMENT_PROVIDER_PRIVATE_KEY="prv_stagtest_5i0ZGIGiFcDQifYsXxvsny7Y37tKqFWg"
+PAYMENT_PROVIDER_EVENTS_KEY="stagtest_events_2PDUmhMywUkvb1LvxYnayFbmofT7w39N"
+PAYMENT_PROVIDER_INTEGRITY_KEY="stagtest_integrity_nAIBuqayW70XpUqJS4qf4STYiISd89Fp"
 ```
 
-## Test
+### Running the Application
 
 ```bash
-# unit tests
-$ yarn run test
+# Development mode
+npm run start:dev
 
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
+# Production mode
+npm run start:prod
 ```
 
-## Support
+The API will be available at `http://localhost:3000`
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## 📚 API Documentation
 
-## Stay in touch
+### Postman Collection
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Import the `postman_collection.json` file into Postman to test all endpoints.
 
-## License
+### Base URL
+```
+http://localhost:3000
+```
 
-Nest is [MIT licensed](LICENSE).
+### Endpoints
+
+#### Products
+
+**GET /products**
+- Get all products with stock information
+- Response: `{ statusCode, message, data: Product[], timestamp }`
+
+**GET /products/:id**
+- Get a specific product by ID
+- Response: `{ statusCode, message, data: Product, timestamp }`
+
+**PATCH /products/:id/update-stock**
+- Update product stock
+- Body: `{ stock: number }`
+- Response: `{ statusCode, message, data: Product, timestamp }`
+
+#### Customers
+
+**POST /customers**
+- Create or get existing customer
+- Body: `{ email: string, full_name: string }`
+- Response: `{ statusCode, message, data: Customer, timestamp }`
+
+#### Deliveries
+
+**POST /deliveries**
+- Create delivery information
+- Body: `{ customerId: string, address: string, city: string }`
+- Response: `{ statusCode, message, data: Delivery, timestamp }`
+
+#### Transactions
+
+**POST /transactions**
+- Create a new transaction with PENDING status
+- Body:
+```json
+{
+  "customerId": "uuid",
+  "deliveryId": "uuid",
+  "products": [
+    { "productId": "uuid", "quantity": 2 }
+  ],
+  "baseFee": 5000,
+  "deliveryFee": 10000,
+  "currency": "COP"
+}
+```
+- Response: `{ statusCode, message, data: Transaction, timestamp }`
+
+**PATCH /transactions/:id/status**
+- Update transaction status (APPROVED, DECLINED, ERROR)
+- Body: `{ status: string, externalTransactionId: string }`
+- Response: `{ statusCode, message, data: Transaction, timestamp }`
+
+#### Payment Provider
+
+**POST /payment-provider/tokens/cards**
+- Create a card token for payment
+- Body:
+```json
+{
+  "number": "4242424242424242",
+  "exp_month": "12",
+  "exp_year": "2025",
+  "cvc": "123",
+  "card_holder": "John Doe"
+}
+```
+- Response: `{ statusCode, message, data: CardToken, timestamp }`
+
+**POST /payment-provider/transactions**
+- Process payment transaction
+- Body:
+```json
+{
+  "acceptance_token": "string",
+  "accept_personal_auth": "true",
+  "amount_in_cents": 3269900,
+  "currency": "COP",
+  "customer_email": "customer@example.com",
+  "reference": "transaction-ref-123",
+  "signature": "signature-hash",
+  "payment_method": {
+    "type": "CARD",
+    "token": "card-token",
+    "installments": 1
+  }
+}
+```
+- Response: `{ statusCode, message, data: PaymentTransaction, timestamp }`
+
+## 🔄 Payment Flow
+
+1. **Show Products**: GET `/products` - Display available products with prices and stock
+2. **Create Customer**: POST `/customers` - Create or get customer information
+3. **Create Delivery**: POST `/deliveries` - Create delivery address
+4. **Create Card Token**: POST `/payment-provider/tokens/cards` - Tokenize credit card
+5. **Create Transaction**: POST `/transactions` - Create transaction with PENDING status
+6. **Process Payment**: POST `/payment-provider/transactions` - Process payment with external provider
+7. **Update Transaction**: PATCH `/transactions/:id/status` - Update transaction with result (APPROVED/DECLINED/ERROR)
+8. **Update Stock**: PATCH `/products/:id/update-stock` - Update product stock after successful payment
+
+## 🧪 Testing
+
+```bash
+# Run unit tests
+npm test
+
+# Run tests with coverage
+npm run test:cov
+
+# Run e2e tests
+npm run test:e2e
+```
+
+### Test Coverage
+
+Run `npm run test:cov` to generate coverage report. Target: >80% coverage.
+
+## 📁 Project Structure
+
+```
+src/
+├── app.module.ts
+├── main.ts
+├── common/
+│   ├── filters/
+│   ├── interceptors/
+│   └── utils/
+├── customers/
+│   ├── application/
+│   │   ├── input/
+│   │   ├── output/
+│   │   ├── ports/
+│   │   ├── services/
+│   │   └── use-cases/
+│   ├── domain/
+│   │   ├── entities/
+│   │   └── value-objects/
+│   ├── infrastructure/
+│   │   ├── adapters/
+│   │   ├── controllers/
+│   │   └── dto/
+│   └── customer.module.ts
+├── deliveries/
+│   └── [similar structure]
+├── products/
+│   └── [similar structure]
+├── transactions/
+│   └── [similar structure]
+├── payment-provider/
+│   └── [similar structure]
+└── prisma/
+    ├── prisma.module.ts
+    └── prisma.service.ts
+```
+
+## 🔐 Security
+
+- Environment variables for sensitive data
+- Input validation with class-validator
+- Error handling and sanitization
+- No hardcoded credentials
+- Security scanning with CodeQL
+
+## 🚢 Deployment
+
+The application can be deployed to:
+- AWS Lambda (Serverless)
+- AWS ECS/EKS (Containerized)
+- AWS EC2
+- Any cloud provider supporting Node.js applications
+
+## 📝 License
+
+UNLICENSED
+
+---
+
+**Important Notes:**
+- This is a test environment using sandbox payment provider
+- Credit card data must follow standard format but can be fake for testing
+- No real money transactions occur
+- Database is seeded with dummy products automatically
