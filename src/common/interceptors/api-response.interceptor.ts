@@ -33,9 +33,6 @@ export class ApiResponseInterceptor implements NestInterceptor {
             case 204:
               message = Messages.PRODUCT_DELETED;
               break;
-            case 200:
-              message = Messages.STOCK_UPDATED;
-              break;
             case 404:
               message = Messages.PRODUCT_NOT_FOUND;
               break;
