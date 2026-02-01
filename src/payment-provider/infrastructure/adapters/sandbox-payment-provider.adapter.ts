@@ -4,7 +4,10 @@ import { CardTokenOutputDto } from 'src/payment-provider/application/output/card
 import { PaymentProviderPort } from 'src/payment-provider/application/ports/payment-provider.port';
 import { CardTokenRequestDto } from '../dto/card-token-request.dto';
 import { HttpService } from '@nestjs/axios';
-import { CardTokenMapper, CardTokenResponseDto } from '../mappers/card-token.mapper';
+import {
+  CardTokenMapper,
+  CardTokenResponseDto,
+} from '../mappers/card-token.mapper';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable()
@@ -22,22 +25,23 @@ export class SandboxPaymentProviderAdapter implements PaymentProviderPort {
     this.privateKey = process.env.PAYMENT_PROVIDER_PRIVATE_KEY ?? '';
   }
 
-  async createCardToken(data: CreateCardTokenInputDto): Promise<CardTokenOutputDto> {
-
+  async createCardToken(
+    data: CreateCardTokenInputDto,
+  ): Promise<CardTokenOutputDto> {
     const request = this.cardTokenMapper.toRequest(data);
 
     const response = await firstValueFrom(
-        this.httpService.post<CardTokenResponseDto>(
-            `${this.baseUrl}/tokens/cards`,
-            request,
-            {
-                headers: {
-                    Authorization: `Bearer ${this.publicKey}`,
-                    'Content-Type': 'application/json',
-                }
-            }
-        )
-    )
+      this.httpService.post<CardTokenResponseDto>(
+        `${this.baseUrl}/tokens/cards`,
+        request,
+        {
+          headers: {
+            Authorization: `Bearer ${this.publicKey}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      ),
+    );
 
     const apiResponse = response.data;
 

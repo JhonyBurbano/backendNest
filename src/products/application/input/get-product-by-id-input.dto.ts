@@ -1,3 +1,3 @@
 export interface GetProductByIdInputDto {
-    id: string;
+  id: string;
 }

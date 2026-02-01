@@ -1,3 +1,3 @@
 export interface CardTokenOutputDto {
-    token: string;
+  token: string;
 }

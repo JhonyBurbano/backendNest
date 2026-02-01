@@ -1,4 +1,4 @@
 export interface UpdateStockInputDto {
-    id: string;
-    amount: number;
+  id: string;
+  amount: number;
 }

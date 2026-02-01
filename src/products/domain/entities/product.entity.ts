@@ -21,7 +21,6 @@ export class Product {
     createdAt: Date = new Date(),
     updatedAt: Date = new Date(),
   ): Product {
-
     if (!name?.trim())
       throw new Error('El nombre del producto no puede estar vacío');
 

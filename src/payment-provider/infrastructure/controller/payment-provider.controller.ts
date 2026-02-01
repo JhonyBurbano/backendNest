@@ -1,13 +1,16 @@
 import { Body, Controller, Inject, Post } from '@nestjs/common';
-import { PAYMENT_PROVIDER, PaymentProviderPort } from 'src/payment-provider/application/ports/payment-provider.port';
+import {
+  PAYMENT_PROVIDER,
+  PaymentProviderPort,
+} from 'src/payment-provider/application/ports/payment-provider.port';
 import { CreateCardTokenDto } from '../dto/create-card-token.dto';
 
 @Controller('payment-provider')
 export class PaymentProviderController {
   constructor(
     @Inject(PAYMENT_PROVIDER)
-    private readonly paymentProvider: PaymentProviderPort
-) {}
+    private readonly paymentProvider: PaymentProviderPort,
+  ) {}
 
   @Post('tokens/cards')
   async createCardToken(@Body() body: CreateCardTokenDto) {
