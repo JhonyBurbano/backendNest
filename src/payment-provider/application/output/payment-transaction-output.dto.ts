@@ -1,4 +1,4 @@
 export interface PaymentTransactionOutputDto {
-    id: string;
-    status: string;
+  id: string;
+  status: string;
 }

@@ -1,9 +1,9 @@
-import { Product as ProductEntity } from "src/products/domain/entities/product.entity";
+import { Product as ProductEntity } from 'src/products/domain/entities/product.entity';
 
 export interface ProductRepositoryPort {
-    findById(id: string): Promise<ProductEntity | null>;
-    findAll(): Promise<ProductEntity[]>;
-    update(product: ProductEntity): Promise<ProductEntity>;
+  findById(id: string): Promise<ProductEntity | null>;
+  findAll(): Promise<ProductEntity[]>;
+  update(product: ProductEntity): Promise<ProductEntity>;
 }
 
 export const PRODUCT_REPOSITORY = Symbol('PRODUCT_REPOSITORY');

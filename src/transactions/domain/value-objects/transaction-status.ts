@@ -1,6 +1,6 @@
 export enum TransactionStatus {
-  PENDING = "PENDING",
-  APPROVED = "APPROVED",
-  DECLINED = "DECLINED",
-  ERROR = "ERROR",
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  DECLINED = 'DECLINED',
+  ERROR = 'ERROR',
 }

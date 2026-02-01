@@ -1,17 +1,23 @@
-import { Money } from "src/products/domain/value-objects/money.vo";
-import { TransactionProduct } from "../entities/transaction-product.entity";
-import { Currency } from "src/products/domain/value-objects/Currency";
+import { Money } from 'src/products/domain/value-objects/money.vo';
+import { TransactionProduct } from '../entities/transaction-product.entity';
+import { Currency } from 'src/products/domain/value-objects/currency';
 
 export class TransactionCalculator {
-    static validateSameCurrency(products: TransactionProduct[], currency: string) {
+  static validateSameCurrency(
+    products: TransactionProduct[],
+    currency: string,
+  ) {
     for (const item of products) {
       if (item.getUnitPrice().getCurrency() !== currency) {
-        throw new Error("Todos los productos deben tener la misma moneda");
+        throw new Error('Todos los productos deben tener la misma moneda');
       }
     }
   }
 
-  static calculateSubtotal(products: TransactionProduct[], currency: Currency): Money {
+  static calculateSubtotal(
+    products: TransactionProduct[],
+    currency: Currency,
+  ): Money {
     const subtotalAmount = products.reduce(
       (acc, item) => acc + item.getTotalAmount(),
       0,
@@ -20,7 +26,11 @@ export class TransactionCalculator {
     return Money.create(subtotalAmount, currency);
   }
 
-  static calculateTotal(subtotal: Money, baseFee: Money, deliveryFee: Money): Money {
+  static calculateTotal(
+    subtotal: Money,
+    baseFee: Money,
+    deliveryFee: Money,
+  ): Money {
     const currency = subtotal.getCurrency();
 
     return Money.create(

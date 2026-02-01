@@ -14,7 +14,6 @@ export class UpdateStockProductUseCase {
   ) {}
 
   async execute(input: UpdateStockInputDto): Promise<ProductEntity> {
-    
     const product = await this.productRepository.findById(input.id);
 
     if (!product) {
@@ -23,7 +22,9 @@ export class UpdateStockProductUseCase {
 
     const productWithStockDecreased = product.decreaseStock(input.amount);
 
-    const updatedProduct = await this.productRepository.update(productWithStockDecreased);
+    const updatedProduct = await this.productRepository.update(
+      productWithStockDecreased,
+    );
 
     return updatedProduct;
   }

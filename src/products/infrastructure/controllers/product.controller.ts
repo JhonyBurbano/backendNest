@@ -15,10 +15,12 @@ export class ProductController {
   @Patch(':id/update-stock')
   async updateStockProduct(
     @Param('id') id: string,
-    @Body() request: UpdateStockDto
+    @Body() request: UpdateStockDto,
   ) {
-    const updatedProduct =
-      await this.updateStockProductService.execute(id, request);
+    const updatedProduct = await this.updateStockProductService.execute(
+      id,
+      request,
+    );
 
     return {
       data: updatedProduct,

@@ -1,4 +1,4 @@
 export class PaymentTransactionResponseDto {
-    id: string;
-    status: string;
+  id: string;
+  status: string;
 }

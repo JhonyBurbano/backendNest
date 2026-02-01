@@ -7,7 +7,6 @@ import { Product as ProductEntity } from 'src/products/domain/entities/product.e
 
 @Injectable()
 export class GetAllProductsUseCase {
-    
   constructor(
     @Inject(PRODUCT_REPOSITORY)
     private readonly productRepository: ProductRepositoryPort,

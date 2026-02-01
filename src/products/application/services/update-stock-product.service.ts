@@ -11,8 +11,10 @@ export class UpdateStockProductService {
     private readonly mapper: UpdateStockMapper,
   ) {}
 
-  async execute(id: string, {amount}: UpdateStockDto): Promise<UpdateStockOutputDto> {
-
+  async execute(
+    id: string,
+    { amount }: UpdateStockDto,
+  ): Promise<UpdateStockOutputDto> {
     const input = this.mapper.toInput(id, amount);
 
     const product = await this.useCase.execute(input);

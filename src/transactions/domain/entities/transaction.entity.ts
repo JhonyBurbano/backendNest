@@ -9,7 +9,7 @@ export class Transaction {
     private readonly status: TransactionStatus,
     private readonly customerId: string,
     private readonly deliveryId: string | null,
-    private readonly wompiTransactionId: string,
+    private readonly externalTransactionId: string,
 
     private readonly product: TransactionProduct[],
 
@@ -25,16 +25,12 @@ export class Transaction {
   static create(params: {
     customerId: string;
     deliveryId?: string | null;
-    wompiTransactionId: string;
+    externalTransactionId: string;
     products: TransactionProduct[];
     baseFee: Money;
     deliveryFee: Money;
   }): Transaction {
-    if (!params.customerId) 
-      throw new Error('El id del cliente es obligatorio');
-
-    if (!params.wompiTransactionId)
-      throw new Error('El id de la transacción es obligatorio');
+    if (!params.customerId) throw new Error('El id del cliente es obligatorio');
 
     if (!params.products?.length)
       throw new Error('La transacción debe tener al menos un producto');
@@ -60,7 +56,7 @@ export class Transaction {
       TransactionStatus.PENDING,
       params.customerId,
       params.deliveryId ?? null,
-      params.wompiTransactionId,
+      params.externalTransactionId,
       params.products,
       subTotal,
       params.baseFee,
@@ -85,8 +81,8 @@ export class Transaction {
     return this.deliveryId;
   }
 
-  getWompiTransactionId(): string {
-    return this.wompiTransactionId;
+  getExternalTransactionId(): string {
+    return this.externalTransactionId;
   }
 
   getProducts(): TransactionProduct[] {

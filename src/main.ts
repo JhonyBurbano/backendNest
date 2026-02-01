@@ -12,7 +12,7 @@ async function bootstrap() {
       whitelist: true,
       forbidNonWhitelisted: true,
       transform: true,
-    })
+    }),
   );
 
   app.useGlobalInterceptors(new ApiResponseInterceptor());
