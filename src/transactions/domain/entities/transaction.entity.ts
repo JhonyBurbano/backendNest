@@ -32,9 +32,6 @@ export class Transaction {
   }): Transaction {
     if (!params.customerId) throw new Error('El id del cliente es obligatorio');
 
-    if (!params.externalTransactionId)
-      throw new Error('El id de la transacción es obligatorio');
-
     if (!params.products?.length)
       throw new Error('La transacción debe tener al menos un producto');
 

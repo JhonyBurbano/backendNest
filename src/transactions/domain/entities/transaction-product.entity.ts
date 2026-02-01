@@ -18,7 +18,6 @@ export class TransactionProduct {
     totalAmount: number;
   }): TransactionProduct {
     if (!params.productId) throw new Error('productId is required');
-    if (!params.transactionId) throw new Error('transactionId is required');
     if (!params.quantity) throw new Error('quantity is required');
     if (!params.unitPrice) throw new Error('unitPrice is required');
     if (!params.totalAmount) throw new Error('totalAmount is required');
