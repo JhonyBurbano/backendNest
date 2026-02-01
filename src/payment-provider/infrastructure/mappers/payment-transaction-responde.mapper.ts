@@ -1,6 +1,8 @@
+import { Injectable } from '@nestjs/common';
 import { PaymentTransactionOutputDto } from 'src/payment-provider/application/output/payment-transaction-output.dto';
 import { PaymentTransactionResponseDto } from '../dto/payment-transaction-response.dto';
 
+@Injectable()
 export class PaymentTransactionResponseMapper {
   toPaymentTransactionOutput(
     paymentTransactionResponse: PaymentTransactionResponseDto,
